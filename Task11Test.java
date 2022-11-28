@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 public class Task11Test {
     public static void main(String[] args) throws FileNotFoundException {
 
-        //Task1
+        //Task1Test
         //Make List of names
 
-        System.out.println("    Task1:");
+        System.out.println("    Task1Test:");
 
         Scanner scanner = new Scanner(new FileInputStream("src/main/java/module11/namelist.txt"));
         List<String> nameList = new ArrayList<>();
@@ -22,14 +22,14 @@ public class Task11Test {
 
         System.out.println("nameList = " + nameList);
 
-        // Task1 solution
+        // Task1Test solution
 
         System.out.println("oddNames(nameList) = " + oddNames(nameList) + "\n");
 
-        // Task2
+        // Task2Test
         // Make List of words
 
-        System.out.println("    Task2:");
+        System.out.println("    Task2Test:");
 
         Scanner scanner1 = new Scanner(new FileInputStream("src/main/java/module11/text.txt"));
         List<String> words = new LinkedList<>();
@@ -38,7 +38,7 @@ public class Task11Test {
         }
         System.out.println("words = " + words);
 
-        //Task2 solution
+        //Task2Test solution
 
         System.out.println("toUpperReversSort(words) = " + toUpperReversSort(words) + "\n");
 
@@ -66,13 +66,13 @@ public class Task11Test {
 
         //generate some objects
 
-        Stream<Task5Object> stream1 = Stream.of(
+        Stream<Task5Object> stream10 = Stream.of(
                 new Task5Object(1, "qqqqq"),
                 new Task5Object(2, "wwwww"),
                 new Task5Object(3, "eeeee"),
                 new Task5Object(4, "rrrrr")
         );
-        Stream<Task5Object> stream2 = Stream.of(
+        Stream<Task5Object> stream20 = Stream.of(
                 new Task5Object(10, "qqq"),
                 new Task5Object(20, "www"),
                 new Task5Object(30, "eee"),
@@ -80,41 +80,41 @@ public class Task11Test {
                 new Task5Object(50, "ttt")
         );
 
-        zip(stream1,stream2)
+        zip(stream10, stream20)
                 .peek(System.out::println)
                 .collect(Collectors.toList());
     }
 
-    public static String oddNames (List<String> nameList) {
+    //Implements methods:
+
+    public static String oddNames(List<String> nameList) {
         return nameList.stream()
                 .filter(name -> nameList.indexOf(name) % 2 == 0)
                 .collect(Collectors.joining(", "));
     }
 
-    public static List<String> toUpperReversSort (List<String> words) {
+    public static List<String> toUpperReversSort(List<String> words) {
         return words.stream()
-                .map(String::toUpperCase)
+                .map(s -> s.toUpperCase())
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList());
     }
 
     public static List<Integer> sortInt(String[] array) {
-         return Arrays.stream(array)
-            .map(elem ->Arrays.asList( elem.split(",")))
-            .flatMap(Collection::stream)
+        return Arrays.stream(array)
+                .map(elem -> Arrays.asList(elem.split(",")))
+                .flatMap(Collection::stream)
                 .sorted()
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
     }
 
     public static <T> Stream<T> zip(Stream<T> first, Stream<T> second) {
-        List<T> result = new ArrayList<>();
-        Iterator<T> firstIterator = first.iterator();
-        Iterator<T> secondIterator = second.iterator();
-        while (firstIterator.hasNext() && secondIterator.hasNext()) {
-            result.add(firstIterator.next());
-            result.add(secondIterator.next());
-        }
-        return result.stream();
+
+        Iterator<T> iterator = second.iterator();
+
+        return first.
+                flatMap(a -> iterator.hasNext() ? (Stream.concat(Stream.of(a), Stream.of(
+                        (iterator.next())))) : null);
     }
 }
